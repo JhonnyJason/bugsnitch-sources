@@ -1,12 +1,14 @@
-import * as configmodule from "./configmodule"
-import * as debugmodule from "./debugmodule"
-import * as scimodule from "./scimodule"
-import * as startupmodule from "./startupmodule"
+import * as configmodule from "./configmodule.js"
+import * as debugmodule from "./debugmodule.js"
+import * as receivermodule from "./receivermodule.js"
+import * as snitchmodule from "./snitchmodule.js"
+import * as startupmodule from "./startupmodule.js"
 
 Modules = {
     configmodule,
     debugmodule,
-    scimodule,
+    receivermodule,
+    snitchmodule,
     startupmodule,
 }
 

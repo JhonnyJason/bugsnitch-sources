@@ -2,8 +2,9 @@ import { addModulesToDebug } from "thingy-debug"
 
 ############################################################
 modulesToDebug = {
-    scimodule: true
-    startupmodule: true
+    # snitchmodule: true
+    # startupmodule: true
+    # receivermodule: true
 }
 
 addModulesToDebug(modulesToDebug)

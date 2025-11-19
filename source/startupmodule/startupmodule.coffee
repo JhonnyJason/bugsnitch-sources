@@ -5,11 +5,10 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
-import * as sci from "./scimodule.js"
+import { startListen } from "./receivermodule.js"
 
 ############################################################
 export serviceStartup = ->
     log "serviceStartup"
-    # other startup moves
-    sci.prepareAndExpose()
+    startListen()
     return
