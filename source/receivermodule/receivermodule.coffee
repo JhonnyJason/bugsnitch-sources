@@ -50,11 +50,8 @@ onInterrupt = -> receiver.close((() -> log("onInterrupt: Shutting down. Bye!")))
 ############################################################
 export startListen = ->
     log "startListen"
-    options = 
-        path: sPath
-        writableAll: true
-    
-    receiver.listen(sPath)
+    options = { path: sPath, writableAll: true }
+    receiver.listen(options)
     receiver.on("error", ((e) -> console.error(e)))
     process.on("SIGTERM", onInterrupt)
     process.on("SIGINT", onInterrupt)
