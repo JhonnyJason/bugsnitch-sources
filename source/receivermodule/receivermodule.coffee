@@ -14,6 +14,9 @@ import { report } from "./snitchmodule.js"
 ############################################################
 sPath = null
 receiver = null
+fd3Receiver = null
+
+fd3Available = false
 
 ############################################################
 export initialize = (c) ->
@@ -24,6 +27,11 @@ export initialize = (c) ->
     catch err then log err
 
     receiver = net.createServer(onConnection)
+    fd3Receiver = net.createServer(onConnection)
+
+    listenFds = parseInt(process.env.LISTEN_FDS)
+    listenPid = parseInt(process.env.LISTEN_PID)
+    fd3Available = (process.pid  === listenPid) and (listenFds > 0)
     return
 
 ############################################################
@@ -50,9 +58,19 @@ onInterrupt = -> receiver.close((() -> log("onInterrupt: Shutting down. Bye!")))
 ############################################################
 export startListen = ->
     log "startListen"
+
+    ## listen also on fd3 on system socket activation
+    if fd3Available
+        handle.fd = 3
+        fd3Receiver.listen(handle)
+        fd3Receiver.on("error", ((e) -> console.error(e)))
+    
+    ## create special socke anyways
     options = { path: sPath, writableAll: true }
     receiver.listen(options)
     receiver.on("error", ((e) -> console.error(e)))
+  
+    ## handle interrupt and terminate signals
     process.on("SIGTERM", onInterrupt)
     process.on("SIGINT", onInterrupt)
     return
