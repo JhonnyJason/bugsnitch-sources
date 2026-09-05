@@ -31,7 +31,7 @@ export initialize = (c) ->
 
     listenFds = parseInt(process.env.LISTEN_FDS)
     listenPid = parseInt(process.env.LISTEN_PID)
-    fd3Available = (process.pid  === listenPid) and (listenFds > 0)
+    fd3Available = (process.pid  == listenPid) and (listenFds > 0)
     return
 
 ############################################################
