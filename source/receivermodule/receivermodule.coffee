@@ -44,7 +44,10 @@ onConnection = (sock) ->
     return
 
 ############################################################
-onInterrupt = -> receiver.close((() -> log("onInterrupt: Shutting down. Bye!")))
+onInterrupt = -> 
+    receiver.close((() -> log("onInterrupt: Shutting down receiver. Bye!")))
+    fd3receiver.close((() -> log("onInterrupt: Shutting down fd3receiver. Bye!")))
+    return
 
 # onInterrupt = ->
 #     onClosed = ->
@@ -58,18 +61,18 @@ onInterrupt = -> receiver.close((() -> log("onInterrupt: Shutting down. Bye!")))
 ############################################################
 export startListen = ->
     log "startListen"
-
-    ## listen also on fd3 on system socket activation
-    if fd3Available
-        handle.fd = 3
-        fd3Receiver.listen(handle)
-        fd3Receiver.on("error", ((e) -> console.error(e)))
+    try
+        ## listen also on fd3 on system socket activation
+        if fd3Available
+            fd3Receiver.listen({fd: 3})
+            fd3Receiver.on("error", ((e) -> console.error(e)))
+        
+        ## create special socke anyways
+        receiver.listen({ path: sPath, writableAll: true })
+        receiver.on("error", ((e) -> console.error(e)))
     
-    ## create special socke anyways
-    options = { path: sPath, writableAll: true }
-    receiver.listen(options)
-    receiver.on("error", ((e) -> console.error(e)))
-  
+    catch err then console.error(err)
+
     ## handle interrupt and terminate signals
     process.on("SIGTERM", onInterrupt)
     process.on("SIGINT", onInterrupt)
