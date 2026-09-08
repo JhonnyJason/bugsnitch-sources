@@ -46,7 +46,7 @@ onConnection = (sock) ->
 ############################################################
 onInterrupt = -> 
     receiver.close((() -> log("onInterrupt: Shutting down receiver. Bye!")))
-    fd3receiver.close((() -> log("onInterrupt: Shutting down fd3receiver. Bye!")))
+    fd3Receiver.close((() -> log("onInterrupt: Shutting down fd3Receiver. Bye!")))
     return
 
 # onInterrupt = ->
